@@ -1,0 +1,89 @@
+networks:
+  devbox:
+    driver: bridge
+services:
+  elasticsearch:
+    build:
+      args:
+        ELK_VERSION: 7.1.1
+      context: C:\Users\Berkay\source\repos\LoggingCore\elasticsearch
+    environment:
+      ES_JAVA_OPTS: -Xmx256m -Xms256m
+    networks:
+      devbox: {}
+    ports:
+    - published: 9200
+      target: 9200
+    - published: 9300
+      target: 9300
+    volumes:
+    - C:\Users\Berkay\source\repos\LoggingCore\elasticsearch\config\elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml:ro
+    - C:\Users\Berkay\source\repos\LoggingCore\elasticsearch\esdata:/usr/share/elasticsearch/data:rw
+  kibana:
+    build:
+      args:
+        ELK_VERSION: 7.1.1
+      context: C:\Users\Berkay\source\repos\LoggingCore\kibana
+    depends_on:
+    - elasticsearch
+    networks:
+      devbox: {}
+    ports:
+    - published: 5601
+      target: 5601
+    volumes:
+    - C:\Users\Berkay\source\repos\LoggingCore\kibana\config:/usr/share/kibana/config:ro
+  loggingcore:
+    build:
+      args:
+        ELK_VERSION: 7.1.1
+      context: C:\Users\Berkay\source\repos\LoggingCore
+      dockerfile: LoggingCore/Dockerfile
+    depends_on:
+    - elasticsearch
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+    image: loggingcore
+    networks:
+      devbox: {}
+    ports:
+    - target: 80
+  logstash:
+    build:
+      args:
+        ELK_VERSION: 7.1.1
+      context: C:\Users\Berkay\source\repos\LoggingCore\logstash
+    depends_on:
+    - elasticsearch
+    environment:
+      LS_JAVA_OPTS: -Xmx256m -Xms256m
+    networks:
+      devbox: {}
+    ports:
+    - published: 5000
+      target: 5000
+    volumes:
+    - C:\Users\Berkay\source\repos\LoggingCore\logstash\config\logstash.yml:/usr/share/logstash/config/logstash.yml:ro
+    - C:\Users\Berkay\source\repos\LoggingCore\logstash\pipeline:/usr/share/logstash/pipeline:ro
+  rabbitmq:
+    environment:
+      RABBITMQ_DEFAULT_PASS: rabbitmq
+      RABBITMQ_DEFAULT_USER: rabbitmq
+      RABBITMQ_DEFAULT_VHOST: /
+      RABBITMQ_ERLANG_COOKIE: SWQOKODSQALRPCLNMEQG
+    image: rabbitmq:3-management
+    networks:
+      devbox: {}
+    ports:
+    - published: 5672
+      target: 5672
+    - published: 15672
+      target: 15672
+  redis:
+    image: redis:alpine
+    networks:
+      devbox: {}
+    ports:
+    - published: 6379
+      target: 6379
+version: '3.4'

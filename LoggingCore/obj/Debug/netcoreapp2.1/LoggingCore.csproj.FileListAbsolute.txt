@@ -1,0 +1,15 @@
+C:\Users\Berkay\source\repos\LoggingCore\LoggingCore\bin\Debug\netcoreapp2.1\appsettings.Development.json
+C:\Users\Berkay\source\repos\LoggingCore\LoggingCore\bin\Debug\netcoreapp2.1\appsettings.json
+C:\Users\Berkay\source\repos\LoggingCore\LoggingCore\bin\Debug\netcoreapp2.1\Properties\launchSettings.json
+C:\Users\Berkay\source\repos\LoggingCore\LoggingCore\bin\Debug\netcoreapp2.1\LoggingCore.deps.json
+C:\Users\Berkay\source\repos\LoggingCore\LoggingCore\bin\Debug\netcoreapp2.1\LoggingCore.runtimeconfig.json
+C:\Users\Berkay\source\repos\LoggingCore\LoggingCore\bin\Debug\netcoreapp2.1\LoggingCore.runtimeconfig.dev.json
+C:\Users\Berkay\source\repos\LoggingCore\LoggingCore\bin\Debug\netcoreapp2.1\LoggingCore.dll
+C:\Users\Berkay\source\repos\LoggingCore\LoggingCore\bin\Debug\netcoreapp2.1\LoggingCore.pdb
+C:\Users\Berkay\source\repos\LoggingCore\LoggingCore\obj\Debug\netcoreapp2.1\LoggingCore.RazorAssemblyInfo.cache
+C:\Users\Berkay\source\repos\LoggingCore\LoggingCore\obj\Debug\netcoreapp2.1\LoggingCore.RazorAssemblyInfo.cs
+C:\Users\Berkay\source\repos\LoggingCore\LoggingCore\obj\Debug\netcoreapp2.1\LoggingCore.AssemblyInfoInputs.cache
+C:\Users\Berkay\source\repos\LoggingCore\LoggingCore\obj\Debug\netcoreapp2.1\LoggingCore.AssemblyInfo.cs
+C:\Users\Berkay\source\repos\LoggingCore\LoggingCore\obj\Debug\netcoreapp2.1\LoggingCore.RazorTargetAssemblyInfo.cache
+C:\Users\Berkay\source\repos\LoggingCore\LoggingCore\obj\Debug\netcoreapp2.1\LoggingCore.dll
+C:\Users\Berkay\source\repos\LoggingCore\LoggingCore\obj\Debug\netcoreapp2.1\LoggingCore.pdb

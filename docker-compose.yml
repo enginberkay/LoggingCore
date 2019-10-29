@@ -1,0 +1,16 @@
+version: '3.4'
+
+services:
+  loggingcore:
+    image: ${DOCKER_REGISTRY-}loggingcore
+    build:
+      context: .
+      dockerfile: LoggingCore/Dockerfile
+      args:
+        ELK_VERSION: $ELK_VERSION
+    networks:
+      - devbox
+
+networks:
+  devbox:
+    driver: bridge
