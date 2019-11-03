@@ -66,12 +66,10 @@ services:
       - devbox
 
   rabbitmq:
-    image: "rabbitmq:3-management"    
-    environment:
-      RABBITMQ_ERLANG_COOKIE: "SWQOKODSQALRPCLNMEQG"
-      RABBITMQ_DEFAULT_USER: "rabbitmq"
-      RABBITMQ_DEFAULT_PASS: "rabbitmq"
-      RABBITMQ_DEFAULT_VHOST: "/"
+    image: "rabbitmq:3-management"
+    build:
+        context: rabbitmq/
+        dockerfile: Dockerfile
     ports:
       - "15672:15672"
       - "5672:5672"

@@ -10,7 +10,9 @@ using Microsoft.Extensions.Logging;
 using Serilog;
 using Serilog.Events;
 using Serilog.Formatting.Elasticsearch;
+using Serilog.Formatting.Json;
 using Serilog.Sinks.Elasticsearch;
+using Serilog.Sinks.RabbitMQ;
 using Serilog.Sinks.SystemConsole.Themes;
 
 namespace LoggingCore
@@ -24,27 +26,43 @@ namespace LoggingCore
                 .Enrich.WithProperty("Application", "LoggingCore.Green")
                 .MinimumLevel.Override("Microsoft", LogEventLevel.Warning)
                 .MinimumLevel.Override("System", LogEventLevel.Warning)
-                .WriteTo.Elasticsearch(
-                    new ElasticsearchSinkOptions(
-                        new Uri("http://dockercompose7204030419852013118_elasticsearch_1:9200/"))
-                    {
-                        CustomFormatter = new ExceptionAsObjectJsonFormatter(renderMessage: true),
-                        AutoRegisterTemplate = true,
-                        TemplateName = "serilog-events-template",
-                        IndexFormat = "loggingcore-log-{0:yyyy.MM.dd}"
-                    })
+                //.WriteTo.Elasticsearch(
+                //    new ElasticsearchSinkOptions(
+                //        new Uri("http://dockercompose7204030419852013118_elasticsearch_1:9200/"))
+                //    {
+                //        CustomFormatter = new ExceptionAsObjectJsonFormatter(renderMessage: true),
+                //        AutoRegisterTemplate = true,
+                //        TemplateName = "serilog-events-template",
+                //        IndexFormat = "loggingcore-log-{0:yyyy.MM.dd}"
+                //    })
                 //.WriteTo.File(@"lifeincore_log.log", LogEventLevel.Debug)
                 //.WriteTo.Console(outputTemplate: "[{Timestamp:HH:mm:ss} {Level}] {SourceContext}{NewLine}{Message:lj}{NewLine}{Exception}{NewLine}", theme: AnsiConsoleTheme.Literate)
+                .WriteTo.RabbitMQ((clientConfiguration, sinkConfiguration) => {
+                    clientConfiguration.Username = "rabbitmq";
+                    clientConfiguration.Password = "rabbitmq";
+                    clientConfiguration.Exchange = "serilog-sink-exchange";
+                    clientConfiguration.ExchangeType = "fanout";
+                    clientConfiguration.DeliveryMode = RabbitMQDeliveryMode.Durable;
+                    clientConfiguration.RouteKey = "Logs";
+                    clientConfiguration.Port = 5672;
+                    clientConfiguration.Hostnames.Add("dockercompose7204030419852013118_rabbitmq_1");
+                    clientConfiguration.VHost = "/";
+                    sinkConfiguration.TextFormatter = new JsonFormatter();
+                })
                 .MinimumLevel.Verbose()
                 .CreateLogger();
-            Log.Information("WebApi Starting...");
             try
             {
+                Log.Information("Starting web host");
                 CreateWebHostBuilder(args).Build().Run();
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
-                Log.Error(e, "@e");
+                Log.Fatal(ex, "Host terminated unexpectedly");
+            }
+            finally
+            {
+                Log.CloseAndFlush();
             }
         }
 

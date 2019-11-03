@@ -7,6 +7,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LoggingCore", "LoggingCore\
 EndProject
 Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{D17B7245-D277-4B05-AB4C-52345CE328F3}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LoggingCore.Test", "..\LoggingCore.Test\LoggingCore.Test.csproj", "{730189D2-8C92-4155-8186-97A5BC8B50E7}"
+	ProjectSection(ProjectDependencies) = postProject
+		{50755EAF-C3AB-42EE-B3DC-BE4E4323C0FA} = {50755EAF-C3AB-42EE-B3DC-BE4E4323C0FA}
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +26,10 @@ Global
 		{D17B7245-D277-4B05-AB4C-52345CE328F3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D17B7245-D277-4B05-AB4C-52345CE328F3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D17B7245-D277-4B05-AB4C-52345CE328F3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{730189D2-8C92-4155-8186-97A5BC8B50E7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{730189D2-8C92-4155-8186-97A5BC8B50E7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{730189D2-8C92-4155-8186-97A5BC8B50E7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{730189D2-8C92-4155-8186-97A5BC8B50E7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
