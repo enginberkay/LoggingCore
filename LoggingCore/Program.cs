@@ -21,6 +21,10 @@ namespace LoggingCore
     {
         public static void Main(string[] args)
         {
+            var config = new ConfigurationBuilder()
+                .AddJsonFile("appsettings.json", optional: false)
+                .Build();
+
             Log.Logger = new LoggerConfiguration()
                 .Enrich.FromLogContext()
                 .Enrich.WithProperty("Application", "LoggingCore.Green")
@@ -35,18 +39,19 @@ namespace LoggingCore
                 //        TemplateName = "serilog-events-template",
                 //        IndexFormat = "loggingcore-log-{0:yyyy.MM.dd}"
                 //    })
-                //.WriteTo.File(@"lifeincore_log.log", LogEventLevel.Debug)
-                //.WriteTo.Console(outputTemplate: "[{Timestamp:HH:mm:ss} {Level}] {SourceContext}{NewLine}{Message:lj}{NewLine}{Exception}{NewLine}", theme: AnsiConsoleTheme.Literate)
-                .WriteTo.RabbitMQ((clientConfiguration, sinkConfiguration) => {
-                    clientConfiguration.Username = "rabbitmq";
-                    clientConfiguration.Password = "rabbitmq";
-                    clientConfiguration.Exchange = "serilog-sink-exchange";
-                    clientConfiguration.ExchangeType = "fanout";
+                .WriteTo.File(@"lifeincore_log.log", LogEventLevel.Debug)
+                .WriteTo.Console(outputTemplate: "[{Timestamp:HH:mm:ss} {Level}] {SourceContext}{NewLine}{Message:lj}{NewLine}{Exception}{NewLine}", theme: AnsiConsoleTheme.Literate)
+                .WriteTo.RabbitMQ((clientConfiguration, sinkConfiguration) =>
+                {
+                    clientConfiguration.Username = config.GetSection("Serilog:RabbitMq:Username").Value;
+                    clientConfiguration.Password = config.GetSection("Serilog:RabbitMq:Password").Value;
+                    clientConfiguration.Exchange = config.GetSection("Serilog:RabbitMq:Exchange").Value;
+                    clientConfiguration.ExchangeType = config.GetSection("Serilog:RabbitMq:ExchangeType").Value;
                     clientConfiguration.DeliveryMode = RabbitMQDeliveryMode.Durable;
-                    clientConfiguration.RouteKey = "Logs";
+                    clientConfiguration.RouteKey = config.GetSection("Serilog:RabbitMq:RouteKey").Value;
                     clientConfiguration.Port = 5672;
-                    clientConfiguration.Hostnames.Add("dockercompose7204030419852013118_rabbitmq_1");
-                    clientConfiguration.VHost = "/";
+                    clientConfiguration.Hostnames.Add(config.GetSection("Serilog:RabbitMq:Hostname").Value);
+                    clientConfiguration.VHost = config.GetSection("Serilog:RabbitMq:VHost").Value;
                     sinkConfiguration.TextFormatter = new JsonFormatter();
                 })
                 .MinimumLevel.Verbose()
